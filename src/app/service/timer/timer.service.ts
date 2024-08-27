@@ -1,13 +1,13 @@
 import { computed, Injectable, Signal, signal, WritableSignal } from '@angular/core';
+import { CounterService } from '../counter/counter.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TimerService {
-  constructor() {}
+  constructor(private counterService:CounterService) {}
 
   private timer = signal(0);
-
 
   playtimer = true;
 

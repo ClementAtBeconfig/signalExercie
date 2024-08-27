@@ -1,33 +1,89 @@
+<h1 style="text-align: center;">SpeedTestCliker</h1>
+<div class="toggle-switch">
+  <input (click)="handleDisplayButtonContainer()"
+         class="toggle-input"
+         id="toggle"
+         type="checkbox">
+  <label class="toggle-label"
+         for="toggle"></label>
+</div>
 <div style="text-align: center;">
-  <h1>Compteur: {{counter()}}</h1>
-  <h1>Timer: {{timer()}}</h1>
-  <div class="button-container">
-    <button  (click)="increment()">+</button>
-    <button  (click)="reset()">reset counter</button>
-    <button  (click)="decrement()">-</button>
-  </div>
-  <div class="button-container">
 
-    <button  (click)="startTimer()" >Start</button>
-    <button  (click)="resetTimer()">reset  timer</button>
-    <button  (click)="stopTimer()">Stop</button>
-  </div>
-<div >
-  <h1>SpeedTestCliker</h1>
-  @if(endSpeedTestButton){
-    <h2>Vous avez fait {{counter()}} clics en 10 secondes !</h2>
-    <button (click)="StartSpeedTestClicker()">Recommencer</button>
-
+  @if(counter()==0){
+    <h2>Compteur: {{counter()}} clic</h2>
   }
+  @else {
+    <h2>Compteur: {{counter()}} clics</h2>
+  }
+  @if(timer()==0){
+    <h2>Temps: {{timer()}} seconde</h2>
+  }
+  @else {
+    <h2>Temps: {{timer()}} secondes</h2>
+  }
+  @if (buttonContainer) {
+  <div class="button-container">
+    <h4>Options de tests</h4>
+    <p-button (click)="increment()">+</p-button>
+    <p-button (click)="reset()">reset counter</p-button>
+    <p-button (click)="decrement()">-</p-button>
+  </div>
+  <div class="button-container">
+
+    <p-button (click)="startTimer()">Start</p-button>
+    <p-button (click)="resetTimer()">reset timer</p-button>
+    <p-button (click)="stopTimer()">Stop</p-button>
+  </div>
+  }
+  <div>
+    @if(endSpeedTestButton){
+      <div class="result-testClicker">
+        <h2>Vous avez fait {{counter()}} clics en 10 secondes !</h2>
+        <h3>Soit une moyenne de {{calculCPS()}} clics par seconde !</h3>
+        <button (click)="startSpeedTestClicker()">Recommencer</button>
+      </div>
+
+    }
     @if(!speedTestButtonStart){
-      <button (click)="StartSpeedTestClicker()">Démarrer</button>
+      <div [formGroup]="dialogFormGroup">
+        <input
+          type="text"
+          pInputText
+          formControlName="pseudoUser"
+          required
+        />
       
+        
+        <p-button 
+          (click)="startSpeedTestClicker()" 
+          [disabled]="dialogFormGroup.invalid">
+          Démarrer
+        </p-button>
+      </div>
+      
+
     }
     @else {
-      <button  id="SpeedTestButton"  (click)="clickEmitTestSpeed()"> {{counter()}} </button>
+    <button id="SpeedTestButton" 
+            (click)="clickEmitTestSpeed()"> {{counter()}} </button>
 
     }
-    
-</div>
 
+  </div>
+  <div>
+    <h1>Tableaux des scores</h1>
+    <p-table [value]="listPlayer" [tableStyle]="{ 'min-width': '50rem' }">
+      <ng-template pTemplate="header">
+          <tr>
+              <th>Pseudo</th>
+              <th>score</th>
+          </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-player>
+          <tr>
+              <td>{{ player.pseudo }}</td>
+              <td>{{ player.score }}</td>
+          </tr>
+      </ng-template>
+  </p-table>
 </div>

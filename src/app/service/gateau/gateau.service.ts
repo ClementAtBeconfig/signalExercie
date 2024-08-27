@@ -13,10 +13,6 @@ export class GateauService {
     })
     
   } 
-  
-  private loggingEffect = effect(() => {
-    console.log(`The count is: ${this.count()}`);
-  });
   makegateau() {
     const nombreDeGateaux = 3;
     const quantiteDeFarineParGateau = 200;
