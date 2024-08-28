@@ -1,25 +1,29 @@
-<h1 style="text-align: center;">SpeedTestCliker</h1>
-<div class="toggle-switch">
-  <input (click)="handleDisplayButtonContainer()"
-         class="toggle-input"
-         id="toggle"
-         type="checkbox">
-  <label class="toggle-label"
-         for="toggle"></label>
-</div>
+<p-toolbar>
+  <div class="p-toolbar-group-start">
+    <i class="pi pi-sun" id="darkmode-icon"></i>
+    <p-inputSwitch [(ngModel)]="darkmode" (onChange)="handleDarkModeChange(darkmode)" />
+    <i class="pi pi-moon" id="darkmode-icon"></i>
+  </div>
+  <div class="p-toolbar-group-center">
+    <h1 style="text-align: center;">SpeedTestCliker</h1>
+  </div>
+  <div class="p-toolbar-group-end">
+    <p-splitButton  icon="pi pi-cog" (onClick)="handleDisplayButtonContainer()"  [model]="items" />
+  </div>
+</p-toolbar>
 <div style="text-align: center;">
 
   @if(counter()==0){
-    <h2>Compteur: {{counter()}} clic</h2>
+  <h2>Compteur: {{counter()}} clic</h2>
   }
   @else {
-    <h2>Compteur: {{counter()}} clics</h2>
+  <h2>Compteur: {{counter()}} clics</h2>
   }
   @if(timer()==0){
-    <h2>Temps: {{timer()}} seconde</h2>
+  <h2>Temps: {{timer()}} seconde</h2>
   }
   @else {
-    <h2>Temps: {{timer()}} secondes</h2>
+  <h2>Temps: {{timer()}} secondes</h2>
   }
   @if (buttonContainer) {
   <div class="button-container">
@@ -29,7 +33,6 @@
     <p-button (click)="decrement()">-</p-button>
   </div>
   <div class="button-container">
-
     <p-button (click)="startTimer()">Start</p-button>
     <p-button (click)="resetTimer()">reset timer</p-button>
     <p-button (click)="stopTimer()">Stop</p-button>
@@ -37,53 +40,50 @@
   }
   <div>
     @if(endSpeedTestButton){
-      <div class="result-testClicker">
-        <h2>Vous avez fait {{counter()}} clics en 10 secondes !</h2>
-        <h3>Soit une moyenne de {{calculCPS()}} clics par seconde !</h3>
-        <button (click)="startSpeedTestClicker()">Recommencer</button>
-      </div>
-
+    <div class="result-testClicker">
+      <h2>Vous avez fait {{counter()}} clics en 10 secondes !</h2>
+      <h3>Soit une moyenne de {{calculCPS()}} clics par seconde !</h3>
+      <p-button (click)="startSpeedTestClicker()">Recommencer</p-button>
+    </div>
     }
     @if(!speedTestButtonStart){
-      <div [formGroup]="dialogFormGroup">
-        <input
-          type="text"
-          pInputText
-          formControlName="pseudoUser"
-          required
-        />
-      
-        
-        <p-button 
-          (click)="startSpeedTestClicker()" 
-          [disabled]="dialogFormGroup.invalid">
-          Démarrer
-        </p-button>
-      </div>
-      
+    <div [formGroup]="dialogFormGroup">
+      <input type="text"
+             [(ngModel)]="pseudoUser"
+             pInputText
+             formControlName="pseudoUser"
+             required />
+      <p-button (click)="startSpeedTestClicker()"
+                [disabled]="dialogFormGroup.invalid">
+        Démarrer
+      </p-button>
+    </div>
 
     }
     @else {
-    <button id="SpeedTestButton" 
+    <button id="SpeedTestButton"
             (click)="clickEmitTestSpeed()"> {{counter()}} </button>
 
     }
-
   </div>
   <div>
     <h1>Tableaux des scores</h1>
-    <p-table [value]="listPlayer" [tableStyle]="{ 'min-width': '50rem' }">
+    <p-table [value]="listPlayer"
+             [tableStyle]="{ 'min-width': '50rem' }">
       <ng-template pTemplate="header">
-          <tr>
-              <th>Pseudo</th>
-              <th>score</th>
-          </tr>
+        <tr>
+          <th>Pseudo</th>
+          <th>Score</th>
+          <th pTooltip="Nombre de clics par seconde">CPS</th>
+        </tr>
       </ng-template>
-      <ng-template pTemplate="body" let-player>
-          <tr>
-              <td>{{ player.pseudo }}</td>
-              <td>{{ player.score }}</td>
-          </tr>
+      <ng-template pTemplate="body"
+                   let-player>
+        <tr>
+          <td>{{ player.pseudo }}</td>
+          <td>{{ player.score }}</td>
+          <td>{{player.cps}}</td>
+        </tr>
       </ng-template>
-  </p-table>
-</div>
+    </p-table>
+  </div>
