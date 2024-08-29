@@ -4,13 +4,11 @@ import {
   effect,
   Inject,
   Injectable,
-  InjectionToken,
   OnInit,
 } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { CounterService } from './service/counter/counter.service';
 import { TimerService } from './service/timer/timer.service';
-import { GateauService } from './service/gateau/gateau.service';
 import { Button } from 'primeng/button';
 import {
   FormBuilder,
@@ -27,10 +25,10 @@ import { PLAYER_TOKEN } from './models/player.models';
 import { TooltipModule } from 'primeng/tooltip';
 import { ToolbarModule } from 'primeng/toolbar';
 import { SplitButtonModule } from 'primeng/splitbutton';
-import { MenuItem } from 'primeng/api';
+import { MenuItem, MessageService } from 'primeng/api';
 import { CommonModule } from '@angular/common';
 import { InputSwitchModule } from 'primeng/inputswitch';
-
+import { ToastModule } from 'primeng/toast';
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -45,10 +43,11 @@ import { InputSwitchModule } from 'primeng/inputswitch';
     ToolbarModule,
     SplitButtonModule,
     CommonModule,
-    InputSwitchModule
-    
+    InputSwitchModule,
+    RouterOutlet,
+    ToastModule
   ],
-  providers: [{ provide: PLAYER_TOKEN, useValue: '' }],
+  providers: [{ provide: PLAYER_TOKEN, useValue: '' } , MessageService ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
@@ -56,7 +55,7 @@ import { InputSwitchModule } from 'primeng/inputswitch';
   providedIn: 'root',
 })
 export class AppComponent implements OnInit {
-  darkmode=false;
+  darkmode = false;
   buttonContainer = false;
   title = 'signalExercie';
   label = 'Démarrer';
@@ -65,19 +64,18 @@ export class AppComponent implements OnInit {
   button: HTMLButtonElement | undefined;
   dialogFormGroup!: FormGroup;
   items: MenuItem[] | undefined;
-
   listPlayer: player[] = [];
-
   timeout = computed(() => this.timer() === 10);
   listLocalPlayer: player[] = [];
 
   constructor(
     @Inject(PLAYER_TOKEN)
     public playerModel: player,
+    private messageService:MessageService,
+    private router:Router,
     public formBuilder: FormBuilder,
     private counterService: CounterService,
-    private timerService: TimerService,
-    private gateauService: GateauService
+    private timerService: TimerService
   ) {
     effect(() => {
       this.button = document.getElementById(
@@ -94,29 +92,38 @@ export class AppComponent implements OnInit {
           cps: this.calculCPS().toString(),
         };
         this.listPlayer.push(this.playerModel);
-        localStorage.setItem('joueur', JSON.stringify(this.listLocalPlayer));
+        this.handleAddDataLocalStorage(this.listPlayer)
       }
     });
   }
+
   ngOnInit(): void {
     this.items = [
       {
-          label: 'Supprimer la base local',
-          icon: 'pi pi-trash'
+        label: 'Supprimer la base local',
+        icon: 'pi pi-trash',
+        command: () => {
+          this.handleClearLocalBase();
+        },
       },
       {
-          label: 'Changer de pseudo',
-          icon: 'pi pi-address-book'
-      }
-  ];
+        label: 'Paramètre',
+        icon: 'pi pi-cog',
+        command:()=>{
+          this.router.navigate(['settings'])
+        }
+      },
+    ];
     this.dialogFormGroup = this.formBuilder.group({
       pseudoUser: new FormControl('', Validators.required),
     });
     var playerLocal = localStorage.getItem('joueur');
     this.listPlayer.push(JSON.parse(playerLocal!));
+    // console.log("test"+this.listPlayer);
   }
   speedTestButtonStart = false;
   endSpeedTestButton = false;
+
   get counter() {
     return this.counterService.getCounter();
   }
@@ -125,8 +132,9 @@ export class AppComponent implements OnInit {
     return this.timerService.getTimer();
   }
 
-  handleDarkModeChange(darkmode:boolean){
-    console.log(darkmode)
+  handleDarkModeChange(darkmode: boolean) {
+    console.log(darkmode);
+    document.body.classList.toggle('dark-theme');
   }
 
   increment() {
@@ -178,5 +186,16 @@ export class AppComponent implements OnInit {
     } else {
       this.buttonContainer = true;
     }
+  }
+
+  handleAddDataLocalStorage(listPlayer: player[]) {
+    console.log(listPlayer)
+    localStorage.setItem('joueur', JSON.stringify(listPlayer));
+  }
+
+  handleClearLocalBase() {
+    localStorage.clear();
+    this.listPlayer=[]
+    this.messageService.add({ severity: 'success', summary: 'Succès', detail: 'Base vidé avec succès !' });
   }
 }

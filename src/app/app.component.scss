@@ -1,29 +1,31 @@
 :host::ng-deep {
 
-   
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+
+    background: var(--bkg-color);
+    color: var(--btn-txt-color);
+
 
 
     .button-container {
         margin: 1rem;
 
         button {
-           text-align: center;
-           margin:0.5rem
+            text-align: center;
+            margin: 0.5rem
         }
     }
 
     #SpeedTestButton {
         height: 15rem !important;
-        width: 20rem!important;
+        width: 20rem !important;
     }
 
     .result-testClicker {
         margin: 2rem;
     }
 
-    #darkmode-icon{
-        margin:0.5rem ;
+    #darkmode-icon {
+        margin: 0.5rem;
     }
 
 }

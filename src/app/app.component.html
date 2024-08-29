@@ -1,3 +1,4 @@
+<p-toast position="top-left" />
 <p-toolbar>
   <div class="p-toolbar-group-start">
     <i class="pi pi-sun" id="darkmode-icon"></i>
@@ -8,7 +9,7 @@
     <h1 style="text-align: center;">SpeedTestCliker</h1>
   </div>
   <div class="p-toolbar-group-end">
-    <p-splitButton  icon="pi pi-cog" (onClick)="handleDisplayButtonContainer()"  [model]="items" />
+    <p-splitButton  icon="pi pi-sliders-v"  (onClick)="handleDisplayButtonContainer()"  [model]="items" />
   </div>
 </p-toolbar>
 <div style="text-align: center;">
@@ -52,6 +53,7 @@
              [(ngModel)]="pseudoUser"
              pInputText
              formControlName="pseudoUser"
+             placeholder="Votre pseudo"
              required />
       <p-button (click)="startSpeedTestClicker()"
                 [disabled]="dialogFormGroup.invalid">
@@ -82,7 +84,7 @@
         <tr>
           <td>{{ player.pseudo }}</td>
           <td>{{ player.score }}</td>
-          <td>{{player.cps}}</td>
+          <td>{{ player.cps }}</td>
         </tr>
       </ng-template>
     </p-table>
