@@ -110,7 +110,8 @@ export class AppComponent implements OnInit {
         label: 'Paramètre',
         icon: 'pi pi-cog',
         command:()=>{
-          this.router.navigate(['settings'])
+          
+          this.router.navigate(["settings"])
         }
       },
     ];
@@ -132,8 +133,7 @@ export class AppComponent implements OnInit {
     return this.timerService.getTimer();
   }
 
-  handleDarkModeChange(darkmode: boolean) {
-    console.log(darkmode);
+  handleDarkModeChange() {
     document.body.classList.toggle('dark-theme');
   }
 

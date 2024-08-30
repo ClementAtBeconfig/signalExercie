@@ -2,7 +2,7 @@
 <p-toolbar>
   <div class="p-toolbar-group-start">
     <i class="pi pi-sun" id="darkmode-icon"></i>
-    <p-inputSwitch [(ngModel)]="darkmode" (onChange)="handleDarkModeChange(darkmode)" />
+    <p-inputSwitch [(ngModel)]="darkmode" (onChange)="handleDarkModeChange()" />
     <i class="pi pi-moon" id="darkmode-icon"></i>
   </div>
   <div class="p-toolbar-group-center">
@@ -48,7 +48,7 @@
     </div>
     }
     @if(!speedTestButtonStart){
-    <div [formGroup]="dialogFormGroup">
+    <div [formGroup]="dialogFormGroup" class="pseudo-container">
       <input type="text"
              [(ngModel)]="pseudoUser"
              pInputText

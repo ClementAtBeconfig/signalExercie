@@ -15,6 +15,11 @@
         }
     }
 
+    .pseudo-container{
+        display: inline-grid;
+        gap:1rem
+    }
+
     #SpeedTestButton {
         height: 15rem !important;
         width: 20rem !important;
